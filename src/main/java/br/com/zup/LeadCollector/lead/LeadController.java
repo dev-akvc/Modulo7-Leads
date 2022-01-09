@@ -17,5 +17,9 @@ public class LeadController {
         return leadService.salvarLead(lead);
     }
 
+    @GetMapping
+    public Iterable<Lead> exibirTodosLeads(){
+        return leadService.exibirLeads();
+    }
 
 }
