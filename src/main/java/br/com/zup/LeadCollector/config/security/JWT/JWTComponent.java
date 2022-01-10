@@ -1,5 +1,7 @@
 package br.com.zup.LeadCollector.config.security.JWT;
 
+import br.com.zup.LeadCollector.config.security.JWT.exceptions.TokenNotValidException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,33 @@ public class JWTComponent {
                 .compact();
 
         return token;
+    }
+
+    public Claims pegarClaims(String token){
+        try{
+            Claims claims = Jwts.parser().setSigningKey(segredo.getBytes()).parseClaimsJws(token).getBody();
+            return claims;
+        }catch (Exception e){
+            throw new TokenNotValidException();
+        }
+    }
+
+    public boolean tokenInvalido(String token){
+        try{
+            Claims claims = pegarClaims(token);
+            Date dataAtual = new Date(System.currentTimeMillis());
+            String username = claims.getSubject();
+            Date vencimentoToken = claims.getExpiration();
+
+            if(username != null && vencimentoToken != null && dataAtual.before(vencimentoToken)){
+                return true;
+            }else{
+                return false;
+            }
+
+        }catch (TokenNotValidException e){
+            return false;
+        }
     }
 
 }
