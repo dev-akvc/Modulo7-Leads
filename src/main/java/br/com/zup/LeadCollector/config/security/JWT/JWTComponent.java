@@ -36,7 +36,7 @@ public class JWTComponent {
         }
     }
 
-    public boolean tokenInvalido(String token){
+    public boolean tokenValido(String token){
         try{
             Claims claims = pegarClaims(token);
             Date dataAtual = new Date(System.currentTimeMillis());
