@@ -22,4 +22,15 @@ public class LeadController {
         return leadService.exibirLeads();
     }
 
+    @PutMapping
+    public Lead atualizarLead(@RequestBody Lead lead){
+        return leadService.atualizarLead(lead);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarLead(@RequestParam String email){
+        leadService.deletarLead(email);
+    }
+
 }
